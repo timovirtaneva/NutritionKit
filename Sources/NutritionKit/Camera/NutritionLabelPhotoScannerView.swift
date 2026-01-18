@@ -18,7 +18,8 @@ public struct NutritionLabelPhotoScannerView: View {
     /// The selected image from the photo picker.
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImage: UIImage? = nil
-    @State private var showCamera: Bool = false
+    
+    @Environment(\.dismiss) private var dismiss
     
     public init(label: Binding<NutritionLabel?>, minBlurScore: Float = 1300) {
         self._label = label
@@ -74,6 +75,7 @@ public struct NutritionLabelPhotoScannerView: View {
             DispatchQueue.main.async {
                 self.isProcessingImage = false
                 self.label = label
+                self.dismiss() // Dismiss the scan view after successful scan
             }
         } catch {
             Log.nutritionKit.error("finding nutrition label failed: \(error.localizedDescription)")
@@ -101,27 +103,10 @@ public struct NutritionLabelPhotoScannerView: View {
                 }
                 .padding()
             } else {
-                HStack {
-                    PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
-                        Label("Photo Library", systemImage: "photo.on.rectangle")
-                            .font(.title2)
-                            .padding()
-                    }
-                    Button(action: { showCamera = true }) {
-                        Label("Take Photo", systemImage: "camera")
-                            .font(.title2)
-                            .padding()
-                    }
-                }
-            }
-        }
-        .sheet(isPresented: $showCamera) {
-            CameraPicker(sourceType: .camera) { image in
-                if let img = image {
-                    self.selectedImage = img
-                    self.onImageSelected(img)
-                } else {
-                    self.reset()
+                PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+                    Label("Select or Take a Photo", systemImage: "photo.on.rectangle")
+                        .font(.title2)
+                        .padding()
                 }
             }
         }
