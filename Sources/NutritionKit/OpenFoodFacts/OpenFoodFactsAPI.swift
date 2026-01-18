@@ -35,7 +35,7 @@ public final class OpenFoodFactsAPI {
     static let openFoodFactsApiUrl: String = "https://world.openfoodfacts.org/api/v2/product"
     
     /// Shared instance.
-    static let shared = OpenFoodFactsAPI()
+    public static let shared = OpenFoodFactsAPI()
     
     /// Update the API configuration.
     public func configure(productFields: [ProductFields]? = nil) {
