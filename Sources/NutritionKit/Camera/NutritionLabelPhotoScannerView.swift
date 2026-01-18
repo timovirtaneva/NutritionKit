@@ -18,7 +18,6 @@ public struct NutritionLabelPhotoScannerView: View {
     /// The selected image from the photo picker.
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImage: UIImage? = nil
-    @State private var showCamera: Bool = false
     
     public init(label: Binding<NutritionLabel?>, minBlurScore: Float = 1300) {
         self._label = label
@@ -101,17 +100,10 @@ public struct NutritionLabelPhotoScannerView: View {
                 }
                 .padding()
             } else {
-                HStack {
-                    PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
-                        Label("Photo Library", systemImage: "photo.on.rectangle")
-                            .font(.title2)
-                            .padding()
-                    }
-                    Button(action: { showCamera = true }) {
-                        Label("Take Photo", systemImage: "camera")
-                            .font(.title2)
-                            .padding()
-                    }
+                PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+                    Label("Select or Take a Photo", systemImage: "photo.on.rectangle")
+                        .font(.title2)
+                        .padding()
                 }
             }
         }
@@ -129,6 +121,7 @@ public struct NutritionLabelPhotoScannerView: View {
         }
         .sheet(isPresented: $showCamera) {
             CameraPicker(sourceType: .camera) { image in
+                self.showCamera = false // Always dismiss the sheet
                 if let img = image {
                     self.selectedImage = img
                     self.onImageSelected(img)
