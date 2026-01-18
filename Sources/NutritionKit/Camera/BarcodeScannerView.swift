@@ -4,10 +4,10 @@ import Toolbox
 
 public struct NkBarcode: Codable, Hashable {
     /// The nkBarcode data.
-    let data: String
+    public let data: String
     
     /// The corners of the nkBarcode.
-    let corners: [CGPoint]
+    public let corners: [CGPoint]
 }
 
 public struct NkBarcodeScannerView: View {
