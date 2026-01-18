@@ -3,7 +3,7 @@ import Foundation
 
 public struct NkFoodItem {
     /// The name of this product.
-    var productName: String?
+    public var productName: String?
     
     /// The nutritional facts for this food item.
     var nutrition: NutritionLabel?
