@@ -6,12 +6,12 @@ import SwiftUI
 import Toolbox
 
 internal final class CameraViewController: UIViewController, NutritionCameraDelegate {
-    let onBarcodeRead: Optional<(String, [CGPoint]) -> Void>
+    let onNkBarcodeRead: Optional<(String, [CGPoint]) -> Void>
     let onImageUpdated: Optional<(UIImage, CVPixelBuffer) -> Void>
     
-    init(onBarcodeRead: Optional<(String, [CGPoint]) -> Void> = nil,
+    init(onNkBarcodeRead: Optional<(String, [CGPoint]) -> Void> = nil,
          onImageUpdated: Optional<(UIImage, CVPixelBuffer) -> Void> = nil) {
-        self.onBarcodeRead = onBarcodeRead
+        self.onNkBarcodeRead = onNkBarcodeRead
         self.onImageUpdated = onImageUpdated
         
         super.init(nibName: nil, bundle: nil)
@@ -61,8 +61,8 @@ internal final class CameraViewController: UIViewController, NutritionCameraDele
         onImageUpdated(uiImage, pixelBuffer)
     }
     
-    func barcodeDetected(data: String, corners: [CGPoint]) {
-        self.onBarcodeRead?(data, corners)
+    func nkBarcodeDetected(data: String, corners: [CGPoint]) {
+        self.onNkBarcodeRead?(data, corners)
     }
 }
 
@@ -88,12 +88,12 @@ internal struct AnyCameraView<Content: View>: View {
     /// The view to display above the camera feed.
     let cameraViewOverlay: Content
     
-    init(onBarcodeRead: Optional<(String, [CGPoint]) -> Void> = nil,
+    init(onNkBarcodeRead: Optional<(String, [CGPoint]) -> Void> = nil,
          onImageUpdated: Optional<(UIImage, CVPixelBuffer) -> Void> = nil,
          @ViewBuilder content: () -> Content) {
         self.cameraManager = .shared
         self.cameraViewOverlay = content()
-        self.controller = .init(onBarcodeRead: onBarcodeRead, onImageUpdated: onImageUpdated)
+        self.controller = .init(onNkBarcodeRead: onNkBarcodeRead, onImageUpdated: onImageUpdated)
     }
     
     var uninitializedView: some View {
@@ -239,8 +239,8 @@ public struct DefaultCameraOverlayView: View {
     /// The current corner points.
     @Binding var rectangle: CameraRect
     
-    /// The default cutout rect for barcode scanning.
-    static let defaultBarcodeCutoutRect: CameraRect = .init(
+    /// The default cutout rect for nkBarcode scanning.
+    static let defaultNkBarcodeCutoutRect: CameraRect = .init(
         CGPoint(x: 0.15, y: 0.6),
         CGPoint(x: 0.85, y: 0.6),
         CGPoint(x: 0.15, y: 0.4),

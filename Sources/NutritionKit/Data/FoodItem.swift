@@ -1,7 +1,7 @@
 
 import Foundation
 
-public struct FoodItem {
+public struct NkFoodItem {
     /// The name of this product.
     var productName: String?
     
@@ -11,7 +11,7 @@ public struct FoodItem {
 
 // MARK: Hashable & Codable
 
-extension FoodItem: Codable {
+extension NkFoodItem: Codable {
     enum CodingKeys: String, CodingKey {
         case productName, nutrition
     }
@@ -31,7 +31,7 @@ extension FoodItem: Codable {
     }
 }
 
-extension FoodItem: Equatable {
+extension NkFoodItem: Equatable {
     public static func ==(lhs: Self, rhs: Self) -> Bool {
         return (
             lhs.productName == rhs.productName
@@ -40,7 +40,7 @@ extension FoodItem: Equatable {
     }
 }
 
-extension FoodItem: Hashable {
+extension NkFoodItem: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(productName)
         hasher.combine(nutrition)

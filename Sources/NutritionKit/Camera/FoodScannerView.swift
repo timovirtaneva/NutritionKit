@@ -4,50 +4,50 @@ import Toolbox
 
 public struct FoodScannerView: View {
     /// The current scanned food item.
-    @Binding var foodItem: FoodItem?
+    @Binding var nkFoodItem: NkFoodItem?
     
-    /// Whether or not a barcode is currently being processed.
-    @State var isProcessingBarcode: Bool = false
+    /// Whether or not a nkBarcode is currently being processed.
+    @State var isProcessingNkBarcode: Bool = false
     
     /// The cutout rectangle.
-    @State var cameraRectangle: CameraRect = DefaultCameraOverlayView.defaultBarcodeCutoutRect
+    @State var cameraRectangle: CameraRect = DefaultCameraOverlayView.defaultNkBarcodeCutoutRect
     
-    public init(foodItem: Binding<FoodItem?>) {
-        self._foodItem = foodItem
+    public init(nkFoodItem: Binding<NkFoodItem?>) {
+        self._nkFoodItem = nkFoodItem
     }
     
     func reset() {
-        self.foodItem = nil
-        self.isProcessingBarcode = false
+        self.nkFoodItem = nil
+        self.isProcessingNkBarcode = false
         self.resetCameraCutout()
     }
     
     func resetCameraCutout() {
         withAnimation {
-            self.cameraRectangle = DefaultCameraOverlayView.defaultBarcodeCutoutRect
+            self.cameraRectangle = DefaultCameraOverlayView.defaultNkBarcodeCutoutRect
         }
     }
     
-    func onBarcodeRead(barcode: String, corners: [CGPoint]) {
-        guard !self.isProcessingBarcode else {
+    func onNkBarcodeRead(nkBarcode: String, corners: [CGPoint]) {
+        guard !self.isProcessingNkBarcode else {
             return
         }
         
-        self.isProcessingBarcode = true
+        self.isProcessingNkBarcode = true
         self.cameraRectangle = .init(corners[3], corners[0], corners[2], corners[1])
         
         Task {
             do {
-                let data = try await OpenFoodFactsAPI.shared.find(barcode)
+                let data = try await OpenFoodFactsAPI.shared.find(nkBarcode)
                 DispatchQueue.main.async {
-                    self.isProcessingBarcode = false
-                    self.foodItem = data
+                    self.isProcessingNkBarcode = false
+                    self.nkFoodItem = data
                 }
             }
             catch {
                 Log.nutritionKit.error(error.localizedDescription)
                 DispatchQueue.main.async {
-                    self.isProcessingBarcode = false
+                    self.isProcessingNkBarcode = false
                 }
             }
         }
@@ -55,8 +55,8 @@ public struct FoodScannerView: View {
     
     public var body: some View {
         ZStack {
-            AnyCameraView(onBarcodeRead: { data, corners in
-                self.onBarcodeRead(barcode: data, corners: corners)
+            AnyCameraView(onNkBarcodeRead: { data, corners in
+                self.onNkBarcodeRead(nkBarcode: data, corners: corners)
             }) {
                 DefaultCameraOverlayView(rectangle: $cameraRectangle)
             }

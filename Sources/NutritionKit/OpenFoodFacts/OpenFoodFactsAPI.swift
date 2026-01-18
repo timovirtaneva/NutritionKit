@@ -44,9 +44,9 @@ public final class OpenFoodFactsAPI {
         }
     }
     
-    /// Load info about a food item with the given barcode.
-    public func find(_ barcode: String) async throws -> FoodItem {
-        guard let url = URL(string: self.formApiUrl(barcode)) else {
+    /// Load info about a food item with the given nkBarcode.
+    public func find(_ nkBarcode: String) async throws -> NkFoodItem {
+        guard let url = URL(string: self.formApiUrl(nkBarcode)) else {
             throw Error.invalidUrl
         }
         
@@ -65,8 +65,8 @@ public final class OpenFoodFactsAPI {
                 }
                 
                 do {
-                    let foodItem = try self.createFoodItem(from: responseJSON)
-                    continutation.resume(returning: foodItem)
+                    let nkFoodItem = try self.createNkFoodItem(from: responseJSON)
+                    continutation.resume(returning: nkFoodItem)
                 }
                 catch {
                     continutation.resume(throwing: error)
@@ -78,7 +78,7 @@ public final class OpenFoodFactsAPI {
     }
     
     /// Create a food item from the JSON returned by the API.
-    private func createFoodItem(from rawData: [String: Any]) throws -> FoodItem {
+    private func createNkFoodItem(from rawData: [String: Any]) throws -> NkFoodItem {
         guard let productData = rawData["product"] as? [String: Any] else {
             throw Error.decodingError
         }
@@ -150,9 +150,9 @@ public final class OpenFoodFactsAPI {
         return nil
     }
     
-    /// Create the API URL for a given barcode.
-    public func formApiUrl(_ barcode: String) -> String {
-        "\(Self.openFoodFactsApiUrl)/\(barcode)?fields=\(productFields.map { $0.rawValue.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! }.joined(separator: ","))"
+    /// Create the API URL for a given nkBarcode.
+    public func formApiUrl(_ nkBarcode: String) -> String {
+        "\(Self.openFoodFactsApiUrl)/\(nkBarcode)?fields=\(productFields.map { $0.rawValue.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! }.joined(separator: ","))"
     }
 }
 

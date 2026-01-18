@@ -5,7 +5,7 @@
 This library provides useful functionality for food and nutrition apps in SwiftUI, including:
 
 - Integration with the *OpenFoodFacts* database
-- Barcode scanning
+- NkBarcode scanning
 - Nutrition label scanning
 - Nutrition label rendering
 
@@ -19,9 +19,9 @@ To lookup a food item from the OpenFoodFacts database, you can use the `OpenFood
 import NutritionKit
 
 let api = OpenFoodFactsAPI.shared
-let foodItem = try await api.find("59032823")
+let nkFoodItem = try await api.find("59032823")
 
-print(foodItem.productName) // Prints "Nutella - 630g"
+print(nkFoodItem.productName) // Prints "Nutella - 630g"
 ```
 
 To configure the fields you are interested in, you can use the `configure` function:
@@ -32,22 +32,22 @@ api.configure(productFields: [.productName, .servingSize])
 
 #
 
-## Barcode Scanning
+## NkBarcode Scanning
 
-NutritionKit provides a SwiftUI view for scanning generic barcodes, `BarcodeScannerView`. To use this view, you must set the value `Privacy - Camera Usage Description` in your app's `Info.plist`.
+NutritionKit provides a SwiftUI view for scanning generic nkBarcodes, `NkBarcodeScannerView`. To use this view, you must set the value `Privacy - Camera Usage Description` in your app's `Info.plist`.
 
-By itself `BarcodeScannerView` only shows the live camera feed with no overlay or other info. You can provide more information yourself by embedding it in a `ZStack` or in another view.
+By itself `NkBarcodeScannerView` only shows the live camera feed with no overlay or other info. You can provide more information yourself by embedding it in a `ZStack` or in another view.
 
 ```swift
 import NutritionKit
 
 struct ContentView: View {
-    @State var barcodeData: Barcode? = nil
+    @State var nkBarcodeData: NkBarcode? = nil
 
     var body: some View {
-        BarcodeScannerView(barcodeData: $barcodeData)
-            .onChange(of: barcodeData) { data in
-                // A barcode was detected in the camera feed
+        NkBarcodeScannerView(nkBarcodeData: $nkBarcodeData)
+            .onChange(of: nkBarcodeData) { data in
+                // A nkBarcode was detected in the camera feed
             }
     }
 }
@@ -55,7 +55,7 @@ struct ContentView: View {
 
 ## Nutrition Label Scanning
 
-NutritionKit can detect and parse nutrition labels. Currently, only English and German labels are supported. Nutrition labels are scanned similarly to barcodes with the `NutritionLabelScannerView`.
+NutritionKit can detect and parse nutrition labels. Currently, only English and German labels are supported. Nutrition labels are scanned similarly to nkBarcodes with the `NutritionLabelScannerView`.
 
 ```swift
 import NutritionKit

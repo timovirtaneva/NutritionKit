@@ -11,8 +11,8 @@ internal protocol NutritionCameraDelegate {
     /// Called whenever the camera image is updated.
     func cameraImageUpdated(imageBuffer: CMSampleBuffer)
     
-    /// Called whenever a barcode is detected.
-    func barcodeDetected(data: String, corners: [CGPoint])
+    /// Called whenever a nkBarcode is detected.
+    func nkBarcodeDetected(data: String, corners: [CGPoint])
 }
 
 internal final class CameraManager: NSObject, ObservableObject {
@@ -284,7 +284,7 @@ extension CameraManager: AVCaptureMetadataOutputObjectsDelegate {
         })
         
         for delegate in delegates {
-            delegate.barcodeDetected(data: stringValue, corners: relativeCorners)
+            delegate.nkBarcodeDetected(data: stringValue, corners: relativeCorners)
         }
     }
 }
