@@ -1,6 +1,6 @@
 
 import SwiftUI
-import Toolbox
+//import Toolbox
 
 public struct NkBarcode: Codable, Hashable {
     /// The nkBarcode data.
