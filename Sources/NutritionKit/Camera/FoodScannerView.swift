@@ -45,7 +45,7 @@ public struct FoodScannerView: View {
                 }
             }
             catch {
-                Log.nutritionKit.error(error.localizedDescription)
+                Log.nutritionKit.error("\(error.localizedDescription)")
                 DispatchQueue.main.async {
                     self.isProcessingNkBarcode = false
                 }
