@@ -1,8 +1,8 @@
 
 import AVFoundation
-import Panorama
+//import Panorama
 import SwiftUI
-import Toolbox
+//import Toolbox
 
 internal protocol NutritionCameraDelegate {
     /// Unique identifier for this delegate.

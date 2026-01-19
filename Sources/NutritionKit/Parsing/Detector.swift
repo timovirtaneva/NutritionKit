@@ -1,9 +1,9 @@
 
 import Foundation
 import ImageIO
-import Panorama
+//import Panorama
 import SwiftUI
-import Toolbox
+//import Toolbox
 import Vision
 
 public final class NutritionLabelDetector {

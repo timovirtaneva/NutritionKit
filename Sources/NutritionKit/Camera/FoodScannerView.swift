@@ -1,6 +1,6 @@
 
 import SwiftUI
-import Toolbox
+//import Toolbox
 
 public struct FoodScannerView: View {
     /// The current scanned food item.

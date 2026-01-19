@@ -1,7 +1,7 @@
 
 import Panorama
 import SwiftUI
-import Toolbox
+//import Toolbox
 
 public struct NutritionLabelScannerView: View {
     /// The scanned nutrition label.

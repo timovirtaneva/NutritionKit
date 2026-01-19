@@ -1,6 +1,6 @@
 import SwiftUI
 import PhotosUI
-import Toolbox
+//import Toolbox
 
 public struct NutritionLabelPhotoScannerView: View {
     /// The scanned nutrition label.

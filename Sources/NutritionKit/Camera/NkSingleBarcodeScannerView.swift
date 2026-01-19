@@ -1,5 +1,5 @@
 import SwiftUI
-import Toolbox
+//import Toolbox
 
 public struct NkSingleBarcodeScannerView: View {
     /// The current nkBarcode data.

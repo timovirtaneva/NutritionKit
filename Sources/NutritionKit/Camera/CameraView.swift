@@ -1,9 +1,9 @@
 
 import AVFoundation
 import Combine
-import Panorama
+//import Panorama
 import SwiftUI
-import Toolbox
+//import Toolbox
 
 internal final class CameraViewController: UIViewController, NutritionCameraDelegate {
     let onNkBarcodeRead: Optional<(String, [CGPoint]) -> Void>
