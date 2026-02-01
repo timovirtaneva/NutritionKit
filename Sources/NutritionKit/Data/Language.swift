@@ -2,7 +2,7 @@
 import Foundation
 
 public enum LabelLanguage: String, Codable, Hashable {
-    case english, german
+    case english, german, finnish
 }
 
 extension NutritionItem: CustomStringConvertible {
@@ -70,7 +70,7 @@ extension NutritionItem: CustomStringConvertible {
         .unsaturatedFat: ["davon ungesättigte fettsäuren", "davon unges. fettsäuren", "ungesättigte fettsäuren", "unges. fettsäuren"],
         .monounsaturatedFat: ["davon einfach ungesättigte fettsäuren", "davon einfach unges. fettsäuren", "einfach ungesättigte fettsäuren", "einfach unges. fettsäuren"],
         .polyunsaturatedFat: ["davon mehrfach ungesättigte fettsäuren", "davon mehrfach unges. fettsäuren", "mehrfach ungesättigte fettsäuren", "mehrfach unges. fettsäuren"],
-        .omega3FattyAcids: ["omega-3 fettsäuren", "omega 3 fettsäuren", "omega-3", "omega 3"],
+        .omega3FattyAcids: ["omega-3 r", "omega 3 fettsäuren", "omega-3", "omega 3"],
         .transFat: [],
         .carbohydrates: ["kohlenhydrate"],
         .sugar: ["davon zucker", "zucker"],
@@ -107,6 +107,53 @@ extension NutritionItem: CustomStringConvertible {
         .iodine: ["iod", "jod"],
         .chromium: ["chrom"],
     ]
+    
+    public static let knownLabelsFinnish: [NutritionItem: Set<String>] = [
+        .calories: ["energy", "energiaa", "energia"],
+        .fat: ["rasvaa", "rasva"],
+        .saturatedFat: ["josta tyydyttynyttä rasvaa","tyydyttynyttä rasvaa","tyydyttynyttä" ],
+        .unsaturatedFat: ["josta tyydyttymätöntä rasvaa"],
+        .monounsaturatedFat: ["josta kertatyydyttymättömät rasvat", "kertatyydyttymättömät rasvat", "kertatyydyttymättömät"],
+        .polyunsaturatedFat: ["josta kertatyydyttymättömät rasvat", "monityydyttymättömät rasvat", "monityydyttymättömät"],
+        .omega3FattyAcids: ["omega-3 rasvaa", "omega-3", "omega 3"],
+        .transFat: [],
+        .carbohydrates: ["hiilihydraatit", "hiilihydraatti"],
+        .sugar: ["josta sokeria", "sokeri", "sokeria"],
+        .addedSugar: [],
+        .sugarAlcohols: [],
+        .starch: ["josta tärkkelystä", "tärkkelys", "tärkkelystä"],
+        .dietaryFiber: ["ravintokuitu", "ravintokuitua", "kuitu", "kuitua"],
+        .protein: ["proteiini", "proteiinia"],
+        .salt: ["suola", "suolaa"],
+        .sodium: ["natriumi", "natriumia"],
+        .cholesterol: ["kolesterolia"],
+        .vitaminA: ["a-vitamiini", "a vitamiini"],
+        .vitaminB1: ["b1-vitamiini1", "b1vitamiini"],
+        .vitaminB2: ["b2-vitamiini", "b2 vitamiini"],
+        .vitaminB6: ["b6-vitamiini", "b6 vitamiini"],
+        .vitaminB9: ["b9-vitamiini", "b9-vitamiini"],
+        .vitaminB12: ["b12-vitamiini", "b12 vitamiini"],
+        .vitaminC: ["c-vitamiini", "c vitamiini"],
+        .vitaminD: ["d-vitamiini", "d vitamiini"],
+        .vitaminE: ["e vitamiini", "e vitamiini"],
+        .vitaminK: ["k-vitamiini", "k vitamiini"],
+        .caffeine: ["kofeiini"],
+        .taurine: ["tauriini"],
+        .alcohol: ["alkoholi", "alk.", "alk.%"],
+        .magnesium: ["magnesiumi"],
+        .zinc: ["sinkki"],
+        .potassium: ["kaliumi"],
+        .calcium: ["kalsiumi"],
+        .iron: ["rauta"],
+        .fluoride: ["fluori", "flouridi"],
+        .copper: ["kupari"],
+        .chloride: ["kloori"],
+        .phosphorus: ["fosfori"],
+        .iodine: ["jodi"],
+        .chromium: ["k’romi"],
+    ]
+
+    
 }
 
 public extension KnownLabel {
@@ -126,6 +173,15 @@ public extension KnownLabel {
         .perContainer: [],
     ]
     
+    /// The known textual representations for this item in the German language.
+    static let knownLabelsFinnish: [KnownLabel: Set<String>] = [
+        .nutritionFacts: ["ravintoarvo", "ravitoarvoilmoitus"],
+        .servingSize: ["annos"],
+        .perServing: ["per annos", "/ annos", "/annos"],
+        .perContainer: [],
+    ]
+
+    
     /// Keywords that can be used to determine the language of the label.
     static let keywordsByLanguage: [LabelLanguage: Set<String>] = {
         var keywords = [LabelLanguage: Set<String>]()
@@ -141,6 +197,13 @@ public extension KnownLabel {
         for (_, spellings) in NutritionItem.knownLabelsGerman {
             keywords[.german]?.insert(contentsOf: spellings)
         }
+        
+        // Finnish
+        keywords[.finnish] = []
+        for (_, spellings) in NutritionItem.knownLabelsFinnish {
+            keywords[.finnish]?.insert(contentsOf: spellings)
+        }
+
         
         return keywords
     }()
@@ -175,4 +238,19 @@ public extension MeasurementUnit {
         .kilocalories: ["kalorien", "kal.", "cal", "kcal"],
         .kilojoules: ["kj", "kilojoules", "kilojoule", "kjoule"]
     ]
+    
+    /// Known spellings for this unit in Finnish.
+    static let knownSpellingsFinnish: [MeasurementUnit: Set<String>] = [
+        .gram: ["gramma", "grammaa", "g"],
+        .milligram: ["milligramma", "milligrammaa", "mg"],
+        .ounce: ["unssi", "unssia"],
+        .liter: ["litra", "litraa", "l"],
+        .milliliter: ["millilitra","millilitraa", "ml"],
+        .cup: ["kuppi", "kuppia"],
+        .liquidOunce: [],
+        .percent: ["%", "prosentti", "prosenttia"],
+        .kilocalories: ["kaloria", "cal", "kcal"],
+        .kilojoules: ["kj", "kilojoulea", "kilojoule", "kjoule"]
+    ]
+
 }

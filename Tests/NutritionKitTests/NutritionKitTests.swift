@@ -183,3 +183,22 @@ class DELabelTests: NutritionLabelScanningTest {
         }
     }
 }
+
+class FILabelTests: NutritionLabelScanningTest {
+    func tesFIELabel1() async throws {
+        try await self.nutritionLabelTest("testLabelFI1") { label in
+            XCTAssertEqual(label.nutritionFacts[.calories], .energy(kcal: MeasurementUnit.kilojoules.normalizeValue(1603)))
+            
+            XCTAssertEqual(label.nutritionFacts[.fat], .solid(milligrams: 21_000))
+            XCTAssertEqual(label.nutritionFacts[.saturatedFat], .solid(milligrams: 13_000))
+            
+            XCTAssertEqual(label.nutritionFacts[.carbohydrates], .solid(milligrams: 12_000))
+            XCTAssertEqual(label.nutritionFacts[.sugar], .solid(milligrams: 300))
+            XCTAssertEqual(label.nutritionFacts[.dietaryFiber], .solid(milligrams: 31_000))
+            
+            XCTAssertEqual(label.nutritionFacts[.protein], .solid(milligrams: 22_000))
+            
+            XCTAssertEqual(label.nutritionFacts[.salt], .solid(milligrams: 100))
+        }
+    }
+}
