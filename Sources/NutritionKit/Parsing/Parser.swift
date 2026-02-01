@@ -102,6 +102,9 @@ class NutritionLabelParser {
             return NutritionItem.knownLabelsEnglish
         case .german:
             return NutritionItem.knownLabelsGerman
+        case .finnish:
+            return NutritionItem.knownLabelsFinnish
+
         }
     }
     
@@ -111,6 +114,9 @@ class NutritionLabelParser {
             return KnownLabel.knownLabelsEnglish
         case .german:
             return KnownLabel.knownLabelsGerman
+        case .finnish:
+            return KnownLabel.knownLabelsFinnish
+
         }
     }
     
@@ -120,6 +126,9 @@ class NutritionLabelParser {
             return MeasurementUnit.knownSpellingsEnglish
         case .german:
             return MeasurementUnit.knownSpellingsGerman
+        case .finnish:
+            return MeasurementUnit.knownSpellingsFinnish
+
         }
     }
     

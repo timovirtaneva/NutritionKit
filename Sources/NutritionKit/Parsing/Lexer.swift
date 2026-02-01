@@ -39,6 +39,8 @@ struct Lexer {
             return NutritionItem.knownLabelsEnglish
         case .german:
             return NutritionItem.knownLabelsGerman
+        case .finnish:
+            return NutritionItem.knownLabelsFinnish
         }
     }
     
@@ -48,6 +50,9 @@ struct Lexer {
             return KnownLabel.knownLabelsEnglish
         case .german:
             return KnownLabel.knownLabelsGerman
+        case .finnish:
+            return KnownLabel.knownLabelsFinnish
+
         }
     }
     
@@ -57,6 +62,9 @@ struct Lexer {
             return MeasurementUnit.knownSpellingsEnglish
         case .german:
             return MeasurementUnit.knownSpellingsGerman
+        case .finnish:
+            return MeasurementUnit.knownSpellingsFinnish
+
         }
     }
     
@@ -66,6 +74,9 @@ struct Lexer {
             return "."
         case .german:
             return ","
+        case .finnish:
+            return ","
+
         }
     }
     

@@ -2,8 +2,13 @@ import XCTest
 @testable import NutritionKit
 
 class NutritionLabelScanningTest: XCTestCase {
-    func nutritionLabelTest(_ assetName: String, testFunction: @escaping (NutritionLabel) -> Void) async throws {
-        let bundle = Bundle(for: NutritionLabelScanningTest.self)
+    func nutritionLabelTest(
+        _ assetName: String,
+        expectedServingSize: ServingSize? = nil,
+        expectedNutritionFacts: [NutritionItem: NutritionAmount]? = nil, // <-- fixed type here
+        testFunction: ((NutritionLabel) -> Void)? = nil
+    ) async throws {
+        let bundle = Bundle.module // Use Bundle.module for SPM resources
         guard let image = UIImage(named: assetName, in: bundle, with: nil)?.cgImage else {
             XCTAssert(false, "image \(assetName) does not exist")
             return
@@ -16,7 +21,15 @@ class NutritionLabelScanningTest: XCTestCase {
         }
         
         let label = try await scanner.scanNutritionLabel()
-        testFunction(label)
+        if let expectedServingSize = expectedServingSize {
+            XCTAssertEqual(label.servingSize, expectedServingSize)
+        }
+        if let expectedNutritionFacts = expectedNutritionFacts {
+            for (item, expectedValue) in expectedNutritionFacts {
+                XCTAssertEqual(label.nutritionFacts[item], expectedValue, "Mismatch for \(item)")
+            }
+        }
+        testFunction?(label)
     }
 }
 
@@ -185,20 +198,38 @@ class DELabelTests: NutritionLabelScanningTest {
 }
 
 class FILabelTests: NutritionLabelScanningTest {
-    func tesFIELabel1() async throws {
+    func testFILabel1() async throws {
         try await self.nutritionLabelTest("testLabelFI1") { label in
-            XCTAssertEqual(label.nutritionFacts[.calories], .energy(kcal: MeasurementUnit.kilojoules.normalizeValue(1603)))
+            XCTAssertEqual(label.nutritionFacts[.calories], .energy(kcal: MeasurementUnit.kilojoules.normalizeValue(58)))
             
-            XCTAssertEqual(label.nutritionFacts[.fat], .solid(milligrams: 21_000))
-            XCTAssertEqual(label.nutritionFacts[.saturatedFat], .solid(milligrams: 13_000))
+            XCTAssertEqual(label.nutritionFacts[.fat], .solid(milligrams: 2_000))
+            XCTAssertEqual(label.nutritionFacts[.saturatedFat], .solid(milligrams: 1_400))
             
-            XCTAssertEqual(label.nutritionFacts[.carbohydrates], .solid(milligrams: 12_000))
-            XCTAssertEqual(label.nutritionFacts[.sugar], .solid(milligrams: 300))
-            XCTAssertEqual(label.nutritionFacts[.dietaryFiber], .solid(milligrams: 31_000))
+            XCTAssertEqual(label.nutritionFacts[.carbohydrates], .solid(milligrams: 4_000))
+            XCTAssertEqual(label.nutritionFacts[.sugar], .solid(milligrams: 4_000))
+            XCTAssertEqual(label.nutritionFacts[.dietaryFiber], .solid(milligrams: 0))
             
-            XCTAssertEqual(label.nutritionFacts[.protein], .solid(milligrams: 22_000))
+            XCTAssertEqual(label.nutritionFacts[.protein], .solid(milligrams: 6_000))
             
-            XCTAssertEqual(label.nutritionFacts[.salt], .solid(milligrams: 100))
+            XCTAssertEqual(label.nutritionFacts[.salt], .solid(milligrams: 130))
         }
     }
+    
+    func testFILabel2() async throws {
+        try await self.nutritionLabelTest("testLabelFI2") { label in
+            XCTAssertEqual(label.nutritionFacts[.calories], .energy(kcal: MeasurementUnit.kilojoules.normalizeValue(369)))
+            
+            XCTAssertEqual(label.nutritionFacts[.fat], .solid(milligrams: 6_500))
+            XCTAssertEqual(label.nutritionFacts[.saturatedFat], .solid(milligrams: 1_300))
+            
+            XCTAssertEqual(label.nutritionFacts[.carbohydrates], .solid(milligrams: 58_000))
+            XCTAssertEqual(label.nutritionFacts[.sugar], .solid(milligrams: 1_000))
+            XCTAssertEqual(label.nutritionFacts[.dietaryFiber], .solid(milligrams: 11_000))
+            
+            XCTAssertEqual(label.nutritionFacts[.protein], .solid(milligrams: 14_000))
+            
+            XCTAssertEqual(label.nutritionFacts[.salt], .solid(milligrams: 10))
+        }
+    }
+
 }
